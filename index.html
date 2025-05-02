@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixiv创作人主页</title>
+    <style>
+        :root {
+            --primary-color: #2a2a2a;
+            --accent-color: #6C5B7B;
+            --animation-timing: 0.5s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Hiragino Kaku Gothic ProN', sans-serif;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .scroll-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s linear;
+        }
+
+        .scroll-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.8);
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: none;
+            border: 2px solid var(--accent-color);
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all var(--animation-timing);
+            border-radius: 20px;
+            -webkit-user-drag: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 200vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 120px;
+            opacity: 0;
+            animation: fadeInUp 1s forwards;
+            animation-delay: 0.3s;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 20px auto;
+            border: 4px solid var(--accent-color);
+            transition: transform 0.5s;
+            cursor: pointer;
+            -webkit-user-drag: none;
+        }
+
+        .profile-image:hover {
+            transform: rotateY(180deg);
+        }
+
+        .animated-text {
+            font-size: 3em;
+            margin: 20px 0;
+            background: linear-gradient(45deg, #6C5B7B, #C06C84, #F67280);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradientShift 5s infinite alternate;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all var(--animation-timing);
+        }
+
+        .card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @media (max-width: 768px) {
+            .animated-text { font-size: 2em; }
+            .grid-container { grid-template-columns: 1fr; }
+            .nav-buttons { padding: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-image-container">
+        <img src="2.png" alt="动态背景" class="scroll-image">
+    </div>
+
+    <nav class="nav-buttons">
+        <a href="https://www.pixiv.net/users/115581002" target="_blank" class="nav-btn">Pixiv主页</a>
+        <div>
+            <button class="nav-btn" onclick="changeLanguage('zh')">中文</button>
+            <button class="nav-btn" onclick="changeLanguage('ja')">日本語</button>
+            <button class="nav-btn" onclick="changeLanguage('en')">English</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero-section">
+            <img src="1.png" alt="Profile" class="profile-image">
+            <h1 class="animated-text" data-i18n="title">Pixiv创作人</h1>
+            <p data-i18n="description">数字艺术与插画创作者</p>
+        </section>
+
+        <div class="grid-container">
+            <div class="card" data-i18n="about">
+                <h2>关于我</h2>
+                <p>创作风格聚焦于奇幻题材与细腻的人物刻画...</p>
+            </div>
+            <div class="card" data-i18n="works">
+                <h2>代表作品</h2>
+                <p>累计投稿作品200+，总收藏数5000+...</p>
+            </div>
+            <div class="card" data-i18n="contact">
+                <h2>联系方式</h2>
+                <p>商务合作请通过Pixiv站内信联系...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全面禁止复制
+        document.addEventListener('copy', function(e) {
+            e.clipboardData.setData('text/plain', '');
+            e.preventDefault();
+        });
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 多语言支持
+        const translations = {
+            zh: {
+                title: "Pixiv创作人",
+                description: "数字艺术与插画创作者",
+                about: "<h2>关于我</h2><p>创作风格聚焦于奇幻题材与细腻的人物刻画...</p>",
+                works: "<h2>代表作品</h2><p>累计投稿作品200+，总收藏数5000+...</p>",
+                contact: "<h2>联系方式</h2><p>商务合作请通过Pixiv站内信联系...</p>"
+            },
+            ja: {
+                title: "Pixivクリエイター",
+                description: "デジタルアートとイラストレーション",
+                about: "<h2>プロフィール</h2><p>ファンタジー題材と繊細な人物描写を専門に...</p>",
+                works: "<h2>代表作</h2><p>累計投稿作品200点以上、総ブックマーク数5000+...</p>",
+                contact: "<h2>連絡先</h2><p>業務提携はPixiv内メッセージにて...</p>"
+            },
+            en: {
+                title: "Pixiv Artist",
+                description: "Digital Art & Illustration Creator",
+                about: "<h2>About Me</h2><p>Specializing in fantasy themes and detailed character design...</p>",
+                works: "<h2>Featured Works</h2><p>200+ published works, 5000+ total bookmarks...</p>",
+                contact: "<h2>Contact</h2><p>For business inquiries please message via Pixiv...</p>"
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                element.innerHTML = translations[lang][key];
+            });
+        }
+
+        // 卡片滚动动画
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // 动态渐变控制
+        const imageContainer = document.querySelector('.scroll-image-container');
+        let lastScroll = 0;
+        let isAnimating = false;
+
+        const updateOpacity = () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const triggerStart = windowHeight * 0.5;  // 调整触发起始点
+            const triggerEnd = windowHeight * 1.2;    // 调整触发结束点
+
+            let opacity = Math.min(Math.max((scrollY - triggerStart) / (triggerEnd - triggerStart), 0), 1);
+            imageContainer.style.opacity = opacity;
+            isAnimating = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!isAnimating) {
+                isAnimating = true;
+                requestAnimationFrame(updateOpacity);
+            }
+        });
+
+        // 初始化设置
+        changeLanguage('zh');
+        document.body.style.visibility = 'visible';
+    </script>
+</body>
+</html>
